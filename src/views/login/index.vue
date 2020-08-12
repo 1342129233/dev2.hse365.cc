@@ -101,6 +101,7 @@
 <script lang="ts">
 import { Provide, Component, Vue } from "vue-property-decorator";
 import Headertop from "@/views/common/head.vue";
+import users from '@/store//modules/users';
 @Component({
   components: {
     Headertop
@@ -124,7 +125,9 @@ export default class Login extends Vue {
       username: this.username,
       password: this.password
     };
-    loginuse(am)
+    users
+    .usersprom()
+    // loginuse(am)
     // this.$httpService
     //   .postData(am, "https://dev2.hse365.cc/_api/login")
     //   .then((res: any) => {
