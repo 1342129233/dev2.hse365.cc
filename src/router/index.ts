@@ -1,19 +1,26 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
+import Home from "../views/home/index.vue";
 import Login from "../views/login/index.vue";
+import Fail from "../views/fail/index.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
+    path: "/home",
+    name: "Home",
+    component: Home
+  },
+  {
+    path: "/login",
     name: "Login",
     component: Login
   },
   {
-    path: "/404",
-    name: "404",
-    component: Login
+    path: "/fail",
+    name: "Fail",
+    component: Fail
   }
 ];
 

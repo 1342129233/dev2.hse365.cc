@@ -1,6 +1,6 @@
-// import HttpRequest from "./interceptors"
-// // import baseURL from '@/api/baseUrl'
-// // const baseURL = '/_api'
-// const axios = new HttpRequest()
+import HttpRequest from "./axios";
+// import baseURL from '@/api/baseUrl'
+const baseURL = "https://dev2.hse365.cc";
+const axios = new HttpRequest(baseURL);
 
-// export default axios
+export default axios;

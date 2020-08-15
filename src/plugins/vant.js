@@ -10,7 +10,16 @@ import {
   Checkbox,
   CheckboxGroup,
   CountDown,
-  Loading
+  Loading,
+  Notify,
+  Swipe,
+  SwipeItem,
+  Lazyload,
+  Grid,
+  GridItem,
+  Image,
+  DropdownMenu,
+  DropdownItem
 } from "vant";
 Vue.use(Form);
 Vue.use(Field);
@@ -23,3 +32,12 @@ Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 Vue.use(CountDown);
 Vue.use(Loading);
+Vue.use(Notify);
+Vue.use(Swipe);
+Vue.use(SwipeItem);
+Vue.use(Lazyload);
+Vue.use(Grid);
+Vue.use(GridItem);
+Vue.use(Image);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);

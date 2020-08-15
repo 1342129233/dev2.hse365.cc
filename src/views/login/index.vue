@@ -101,38 +101,36 @@
 <script lang="ts">
 import { Provide, Component, Vue } from "vue-property-decorator";
 import Headertop from "@/views/common/head.vue";
-import users from '@/store//modules/users';
+// import { UserModule } from "@/store/modules/users";
+// import { getModule } from 'vuex-module-decorators';
+import { UsersModule } from "@/store/modules/users";
+// const users = getModule(UsersModule);
+
 @Component({
   components: {
     Headertop
   }
 })
 export default class Login extends Vue {
-  @Provide() private headtitle = "登录/注册";
-  @Provide() private checked = true; // 记住密码
-  @Provide() private active = 2; // 切换注册登录
-  @Provide() private username = "12345678913"; // 账号
-  @Provide() private password = "666666"; // 密码
-  @Provide() private tel = ""; // 手机号
-  @Provide() private sms = ""; // 短信验证码
-  @Provide() private digit = ""; // 企业码
-  @Provide() private agreement = true; // 协议
-  @Provide() private verificationcode = "获取验证码"; // 获取验证码 切换 倒计时
-  @Provide() private secoped = 60;
+  private headtitle = "登录/注册";
+  private checked = true; // 记住密码
+  private active = 2; // 切换注册登录
+  private username = "12345678913"; // 账号
+  private password = "666666"; // 密码
+  private tel = ""; // 手机号
+  private sms = ""; // 短信验证码
+  private digit = ""; // 企业码
+  private agreement = true; // 协议
+  private verificationcode = "获取验证码"; // 获取验证码 切换 倒计时
+  private secoped = 60;
   // 登录
   onSubmit(): void {
     const am = {
       username: this.username,
       password: this.password
     };
-    users
-    .usersprom()
-    // loginuse(am)
-    // this.$httpService
-    //   .postData(am, "https://dev2.hse365.cc/_api/login")
-    //   .then((res: any) => {
-    //     console.log(res);
-    //   });
+    // UserModule.userspromStaff(am);
+    UsersModule.userspromStaff({ router: this.$router, am });
   }
   // 获取验证码
   senden() {
