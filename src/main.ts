@@ -6,6 +6,13 @@ import store from "./store";
 // Vue.use(VueWechatTitle)
 // 按需引入 View UI
 import "@/plugins/vant";
+
+// 过滤器
+import * as filters from "./plugins/filter";
+Object.keys(filters).forEach((key: string) => {
+  Vue.filter(key, (filters as any)[key]);
+});
+
 Vue.config.productionTip = false;
 
 // 全局权限检查

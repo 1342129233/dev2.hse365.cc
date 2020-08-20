@@ -104,7 +104,6 @@ import Headertop from "@/views/common/head.vue";
 // import { UserModule } from "@/store/modules/users";
 // import { getModule } from 'vuex-module-decorators';
 import { UsersModule } from "@/store/modules/users";
-// const users = getModule(UsersModule);
 
 @Component({
   components: {
@@ -129,7 +128,6 @@ export default class Login extends Vue {
       username: this.username,
       password: this.password
     };
-    // UserModule.userspromStaff(am);
     UsersModule.userspromStaff({ router: this.$router, am });
   }
   // 获取验证码

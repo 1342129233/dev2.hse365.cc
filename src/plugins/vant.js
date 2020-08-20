@@ -19,7 +19,13 @@ import {
   GridItem,
   Image,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Card,
+  Empty,
+  Col,
+  Row,
+  Tabbar,
+  TabbarItem
 } from "vant";
 Vue.use(Form);
 Vue.use(Field);
@@ -41,3 +47,9 @@ Vue.use(GridItem);
 Vue.use(Image);
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
+Vue.use(Card);
+Vue.use(Empty);
+Vue.use(Col);
+Vue.use(Row);
+Vue.use(Tabbar);
+Vue.use(TabbarItem);
