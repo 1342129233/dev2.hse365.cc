@@ -490,7 +490,7 @@ export default class Home extends Vue {
 .evaluation_list {
   height: 30px;
   line-height: 30px;
-  margin: 0 14px;
+  margin: 0 14px; 
   border-bottom: 1px solid #666;
 }
 .jou_err {
