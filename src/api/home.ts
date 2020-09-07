@@ -34,3 +34,12 @@ export function curriculumRequest(data: object) {
     data
   });
 }
+
+// 测评考试
+export function getTestpaperOrExamRequest(data: object) {
+  return axios.request({
+    url: `${_api}/Testpaper/getTestpaperOrExam`,
+    method: "POST",
+    data
+  });
+}

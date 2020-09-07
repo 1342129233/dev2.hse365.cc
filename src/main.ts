@@ -4,14 +4,17 @@ import router from "./router";
 import store from "./store";
 // import VueWechatTitle from 'vue-wechat-title'  // 需要编写 xx.d.ts 文件
 // Vue.use(VueWechatTitle)
-// 按需引入 View UI
-import "@/plugins/vant";
 
+// svg 引入
+import "@/assets/icons";
 // 过滤器
 import * as filters from "./plugins/filter";
 Object.keys(filters).forEach((key: string) => {
   Vue.filter(key, (filters as any)[key]);
 });
+
+// 按需引入 View UI
+import "@/plugins/vant";
 
 Vue.config.productionTip = false;
 

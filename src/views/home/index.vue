@@ -8,19 +8,23 @@
           v-lazy="image.img"
           class="lazyimg"
           alt="找不到图片了"
-          onerror="this.src='';this.onerror=null"
+          onerror="this.src=''this.onerror=null"
         />
       </van-swipe-item>
     </van-swipe>
-    <van-image src="https://img.yzcdn.cn/vant/cat.jpeg" v-else>
-      <template v-slot:loading>
+    <van-image
+      src="https://img.yzcdn.cn/vant/cat.jpeg"
+      v-else
+      class="loadingswiper"
+    >
+      <!-- <template v-slot:loading>
         <van-loading type="spinner" size="20" />
-      </template>
+      </template> -->
     </van-image>
     <!-- icon -->
     <swiper ref="mySwiper" :options="swiperOptions">
       <swiper-slide
-        style="width: 25%;"
+        style="width: 25%"
         v-for="item in $store.state.home.icons"
         :key="item.id"
       >
@@ -56,7 +60,10 @@
           <div class="dian_hui" v-for="(item, index) in 3" :key="index"></div>
         </div>
       </div>
-      <div class="Journalism_content" v-if="newscontent.length > 0">
+      <div
+        class="Journalism_content"
+        v-if="newscontent.length > 0 && activeName == 1"
+      >
         <div class="Journalism_san" v-for="item in newscontent" :key="item.id">
           <div class="Journalism_sanimg">
             <van-image
@@ -114,9 +121,9 @@
           主题课程
           <div class="name_active"></div>
         </div>
-        <div class="dian">
+        <router-link to="/curriculumPage" class="dian">
           <div class="dian_hui" v-for="(item, index) in 3" :key="index"></div>
-        </div>
+        </router-link>
       </div>
       <div class="Journalism_content" v-if="InternalCourses.length > 0">
         <div class="curriculum_san">
@@ -189,11 +196,27 @@
           <div class="dian_hui" v-for="(item, index) in 3" :key="index"></div>
         </div>
       </div>
-      <div class="Journalism_content">
-        <div class="evaluation_list">我要答题多选</div>
-        <div class="evaluation_list">我要答题多选</div>
-        <div class="evaluation_list">我要答题多选</div>
+      <div class="Journalism_content" v-if="evalumination.length > 0">
+        <div
+          class="evaluation_list"
+          v-for="tables in evalumination"
+          :key="tables.id"
+        >
+          {{ tables.name }}
+        </div>
       </div>
+      <!-- 错误 -->
+      <div class="jou_err" v-else>
+        <van-empty image="error" description="没有最新数据" />
+      </div>
+    </div>
+    <div class="img_foot">
+      <div class="img_time">
+        <span>3月29日</span>
+        <span>星期四</span>
+        <span>晴朗</span>
+      </div>
+      <img :src="robot" alt="机器人" />
     </div>
     <Footers></Footers>
   </div>
@@ -207,6 +230,18 @@ import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 // import 'swiper/swiper-bundle.css'
 import "swiper/css/swiper.min.css";
 import { HomeModule } from "@/store/modules/home";
+// 课程接口
+interface E {
+  eid: string;
+  userId: string;
+  count: string;
+  isOpen: number;
+}
+// 测评 / 考试  接口
+interface Textp {
+  type: string;
+  userId: string;
+}
 @Component({
   components: {
     Headertop,
@@ -216,7 +251,9 @@ import { HomeModule } from "@/store/modules/home";
   }
 })
 export default class Home extends Vue {
-  private evaluation = 1 // 1测评 2考试
+  private robot = require("@/assets/img/home/img_foot.png");
+  private evalumination = []; // 测评考试数据
+  private evaluation = 1; // 1测评 2考试
   private curriculum = 1; // 课程
   private InternalCourses: object[] = []; // 内部课程
   private activeName = 1; // 新闻
@@ -226,7 +263,7 @@ export default class Home extends Vue {
   private cc = require("@/assets/img/newPlatform/daily-tasks.png");
   private images = [];
   private swiperOptions = {
-    slidesPerView: 4, // 一页几个
+    slidesPerView: 5, // 一页几个
     // spaceBetween: 30,  // 宽度间距
     // 定义slides的数量多少为一组
     slidesPerGroup: 4,
@@ -241,6 +278,19 @@ export default class Home extends Vue {
     // pagination: '.swiper-pagination',
     // paginationClickable: true,
     // Some Swiper option/callback...
+  };
+
+  // 课程
+  private database: E = {
+    eid: "81",
+    userId: this.$store.state.user.username.user_id,
+    count: "6",
+    isOpen: 1
+  };
+  private testpaper: Textp = {
+    // 测评/考试
+    type: "test",
+    userId: this.$store.state.user.username.user_id
   };
   beforeMount() {
     // 轮播
@@ -259,30 +309,18 @@ export default class Home extends Vue {
     });
 
     // 课程
-    interface E {
-      eid: string;
-      user_id: string;
-      count: string;
-      isOpen: string;
-    }
-    console.log(this.$store.state.user.username);
-    let database: E = {
-      eid: "81",
-      user_id: this.$store.state.user.username.user_id,
-      count: "6",
-      isOpen: "1"
-    };
-    HomeModule.curriculumStaff(database).then((data: any) => {
+    HomeModule.curriculumStaff(this.database).then((data: any) => {
       const setdata = data.data;
       if (setdata.code == 0) {
         this.InternalCourses = setdata.data;
       }
     });
-    database.isOpen = "2";
-    HomeModule.curriculumStaff(database).then((data: any) => {
+
+    // 测评考试
+    HomeModule.getTestpaperOrExamStaff(this.testpaper).then((data: any) => {
       const setdata = data.data;
       if (setdata.code == 0) {
-        console.log(setdata.data);
+        this.evalumination = setdata.data;
       }
     });
   }
@@ -293,10 +331,38 @@ export default class Home extends Vue {
   // 课程
   curriculumsan(name: number): void {
     this.curriculum = name;
+    this.database.isOpen = name;
+    HomeModule.curriculumStaff(this.database).then((data: any) => {
+      const setdata = data.data;
+      if (setdata.code == 0) {
+        if (setdata.data == null || setdata.data == []) {
+          this.InternalCourses = [];
+        } else {
+          this.InternalCourses = setdata.data;
+        }
+      }
+    });
   }
-  // 测评 考试
-  isEvaluation(name:number): void {
-    this.evaluation = name
+  // 测评 考试 切换
+  isEvaluation(name: number): void {
+    this.evaluation = name;
+    if (name == 1) {
+      this.testpaper.type = "test";
+      HomeModule.getTestpaperOrExamStaff(this.testpaper).then((data: any) => {
+        const setdata = data.data;
+        if (setdata.code == 0) {
+          this.evalumination = setdata.data;
+        }
+      });
+    } else if (name == 2) {
+      this.testpaper.type = "exam";
+      HomeModule.getTestpaperOrExamStaff(this.testpaper).then((data: any) => {
+        const setdata = data.data;
+        if (setdata.code == 0) {
+          this.evalumination = setdata.data;
+        }
+      });
+    }
   }
   iconMessage() {
     console.log();
@@ -343,7 +409,7 @@ export default class Home extends Vue {
     .dian {
       width: 30px;
       text-align: center;
-      height: 20px;
+      // height: 20px;
       line-height: 20px;
       font-size: 14px;
       margin-right: 10px;
@@ -488,14 +554,44 @@ export default class Home extends Vue {
 }
 // 测评考试
 .evaluation_list {
-  height: 30px;
-  line-height: 30px;
-  margin: 0 14px; 
-  border-bottom: 1px solid #666;
+  height: 38px;
+  line-height: 38px;
+  margin: 0 14px;
+  border-bottom: 1px solid $color-E8;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #333333;
 }
 .jou_err {
   width: 100%;
   height: 260px;
   overflow: hidden;
+}
+.img_foot {
+  margin: 15px 14px;
+  height: 114px;
+  position: relative;
+  .img_time {
+    font-size: 12px;
+    width: 160px;
+    left: 50%;
+    margin-left: -60px;
+    position: absolute;
+    color: #fff;
+    text-align: center;
+    top: 24px;
+    span {
+      margin: 0 6px;
+    }
+  }
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.loadingswiper {
+  width: 100%;
+  height: 117px;
 }
 </style>

@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/home",
+    path: "/",
     name: "Home",
     meta: {
       title: "首页"
@@ -62,6 +62,12 @@ const routes: Array<RouteConfig> = [
       title: "404"
     },
     component: Fail
+  },
+  {
+    path: "/curriculumPage",
+    name: "curriculumPage",
+    component: resolve =>
+      require(["@/views/homepage/curriculumPage/index.vue"], resolve)
   }
 ];
 

@@ -12,5 +12,5 @@ import { Component, Vue } from "vue-property-decorator";
     Footers
   }
 })
-export default class Circle extends Vue {}
+export default class Circles extends Vue {}
 </script>

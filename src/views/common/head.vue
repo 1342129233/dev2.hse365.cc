@@ -18,7 +18,7 @@ export default class Headertop extends Vue {
   //   required: true,
   //   default: "爱普数智"
   // })
-  // headtitle!: string;
+  // headtitle!: string
   @Prop(String) headtitle!: string;
   private value1 = 0;
   private option1 = [

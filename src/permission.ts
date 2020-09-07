@@ -13,8 +13,8 @@ router.beforeEach((to, from, next) => {
   const getToken = localStorage.getItem("token");
   if (getToken) {
     // 有 token 访问页面，就跳到首页
-    if (to.path == "/login") {
-      next("/home");
+    if (to.path === "/login") {
+      next("/");
     } else {
       next();
     }
@@ -24,7 +24,6 @@ router.beforeEach((to, from, next) => {
     //   next('/')
     // }
   } else {
-    console.log(753);
     if (whiteList.includes(to.path)) {
       // 白名单，免密登录
       next();

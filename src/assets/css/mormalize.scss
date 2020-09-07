@@ -368,10 +368,22 @@
    * Add the correct display in IE 10.
    */
   
+  // [hidden] {
+  //   display: none;
+  // }
+
+  // ul, li { list-style: none; }
+
+  // a {color: #999;}
+  
+  /**
+   * Add the correct display in IE 10.
+   */
+  
   [hidden] {
-    display: none;
+    display: none
   }
 
-  ul, li { list-style: none; }
+  ul, li { list-style: none }
 
-  a {color: #999;}
+  // a {color: #999}

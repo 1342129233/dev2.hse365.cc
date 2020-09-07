@@ -25,7 +25,12 @@ import {
   Col,
   Row,
   Tabbar,
-  TabbarItem
+  TabbarItem,
+  Search,
+  Toast,
+  TreeSelect,
+  Sidebar,
+  SidebarItem
 } from "vant";
 Vue.use(Form);
 Vue.use(Field);
@@ -53,3 +58,8 @@ Vue.use(Col);
 Vue.use(Row);
 Vue.use(Tabbar);
 Vue.use(TabbarItem);
+Vue.use(Search);
+Vue.use(Toast);
+Vue.use(TreeSelect);
+Vue.use(Sidebar);
+Vue.use(SidebarItem);

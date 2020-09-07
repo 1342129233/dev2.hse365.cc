@@ -44,7 +44,7 @@ export default class User extends VuexModule {
 
     localStorage.setItem("username", JSON.stringify(tokenkey.user));
     // let usernamelocal:any = localStorage.getItem("username")
-    // usernamelocal = usernamelocal ? JSON.parse(usernamelocal) : '';
+    // usernamelocal = usernamelocal ? JSON.parse(usernamelocal) : ''
     // this.username.eid = usernamelocal ? usernamelocal.manage_eid : ''
     // this.username.user_id = usernamelocal ? usernamelocal.id : ''
   }
@@ -58,7 +58,7 @@ export default class User extends VuexModule {
         if (data.code == 0) {
           this.context.commit("TOKENKEY", data.data);
           Notify({ type: "success", message: "登陆成功" });
-          router.push({ path: "/home" });
+          router.push({ path: "/" });
         }
       });
     });

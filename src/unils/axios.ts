@@ -26,7 +26,7 @@ class HttpRequest {
         return Qs.stringify(params);
       },
       headers: {
-        // 'Content-Type': 'application/json/;charset=UTF-8',
+        // 'Content-Type': 'application/json/charset=UTF-8',
         // "Content-Type": "application/json",
         // 'Authorization': localStorage.getItem('token'),
         // 'Access-Control-Allow-Origin': '*',
@@ -40,7 +40,7 @@ class HttpRequest {
     delete this.queue[url];
     if (!Object.keys(this.queue).length) {
       // 处理一些事情
-      // store.dispatch("loading", true);
+      // store.dispatch("loading", true)
     }
   }
   interceptors(instance: any, url: any) {
@@ -77,21 +77,24 @@ class HttpRequest {
         // getToken('token')
         const token = localStorage.getItem("token");
         if (res.data.code === 10001 || res.data.code === 10002) {
-          // localStorage.removeItem('token')
+          localStorage.removeItem("token");
           // removeToken('token')
-          router.replace({ path: "/login" });
+          if (router.currentRoute.path === "/login") {
+          } else {
+            router.replace({ path: "/login" });
+          }
         } else if (res.headers.new_token) {
           // 更新token
           // setToken(res.headers.new_token)
           localStorage.setItem("token", res.headers.new_token);
         }
-        // this.destroy(url);
-        // store.dispatch("loading", false);
+        // this.destroy(url)
+        // store.dispatch("loading", false)
         const { data, status } = res;
         return { data, status };
       },
       (error: any) => {
-        // this.destroy(url);
+        // this.destroy(url)
         if (error.response.status >= 500) {
           Notify({ type: "warning", message: "网络连接失败！" });
         } else if (error.response.status === 401) {
@@ -117,7 +120,7 @@ class HttpRequest {
     options = Object.assign(this.getInsideConfig(), options); // 合并两个对象
     // instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'  // 请求头  enctype="multipart/form-data"
     instance.defaults.headers.post["Content-Type"] =
-      "application/x-www-form-urlencoded;multipart/form-data";
+      "application/x-www-form-urlencodedmultipart/form-data";
     instance.defaults.headers.post["enctype"] = "multipart/form-data";
     this.interceptors(instance, options.url); // (拦截, 请求地址)
     return instance(options);

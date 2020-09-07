@@ -23,7 +23,7 @@
             <van-checkbox v-model="checked" icon-size="14px" class="pass_jz"
               >记住密码</van-checkbox
             >
-            <div style="margin: 16px;">
+            <div style="margin: 16px">
               <van-button
                 round
                 block
@@ -81,7 +81,7 @@
                 >《HSE服务协议》</span
               ></van-checkbox
             >
-            <div style="margin: 16px;">
+            <div style="margin: 16px">
               <van-button
                 round
                 block
@@ -101,8 +101,8 @@
 <script lang="ts">
 import { Provide, Component, Vue } from "vue-property-decorator";
 import Headertop from "@/views/common/head.vue";
-// import { UserModule } from "@/store/modules/users";
-// import { getModule } from 'vuex-module-decorators';
+// import { UserModule } from "@/store/modules/users"
+// import { getModule } from 'vuex-module-decorators'
 import { UsersModule } from "@/store/modules/users";
 
 @Component({

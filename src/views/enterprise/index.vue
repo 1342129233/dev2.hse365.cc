@@ -1,8 +1,8 @@
 <template>
-<div>
-  企业
-  <Footers></Footers>
-</div>
+  <div>
+    企业
+    <Footers></Footers>
+  </div>
 </template>
 <script lang="ts">
 import Footers from "@/views/common/footer.vue";

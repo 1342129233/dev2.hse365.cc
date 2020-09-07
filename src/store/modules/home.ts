@@ -10,7 +10,8 @@ import {
   bannerRequest,
   iconRequest,
   journalismRequest,
-  curriculumRequest
+  curriculumRequest,
+  getTestpaperOrExamRequest
 } from "@/api/home";
 const _api = "/";
 @Module({
@@ -86,6 +87,20 @@ export default class Home extends VuexModule {
   curriculumStaff(data: object): any {
     return new Promise((resolve, reject) => {
       curriculumRequest(data)
+        .then((data: any) => {
+          resolve(data);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
+
+  // 测评考试
+  @Action
+  getTestpaperOrExamStaff(data: any) {
+    return new Promise((resolve, reject) => {
+      getTestpaperOrExamRequest(data)
         .then((data: any) => {
           resolve(data);
         })

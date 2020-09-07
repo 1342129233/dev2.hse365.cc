@@ -5,17 +5,17 @@
 @import "./defaultImg.scss";
 
 /* color */
-.color-main { color: $color-main; }
-.color-green { color: $color-green; }
+.color-main { color: $color-main }
+.color-green { color: $color-green }
 
 /* text-align */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
+.text-center { text-align: center }
+.text-left { text-align: left }
+.text-right { text-align: right }
 
 /* float */
-.pull-right { float: right; }
-.pull-left { float: left; }
+.pull-right { float: right }
+.pull-left { float: left }
 
 /* font-size */
 .fs-24 {
@@ -23,8 +23,8 @@
 }
 
 /* position */
-.p-r { position: relative; }
-.p-a { position: absolute; }
+.p-r { position: relative }
+.p-a { position: absolute }
 
 /* clearfix */
-.clearfix { @extend %clearfix; }
+.clearfix { @extend %clearfix }

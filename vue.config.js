@@ -11,7 +11,7 @@ module.exports = {
     //   // 为生产环境修改配置...
     // } else if (process.env.NODE_ENV === 'development') {
     //   // 为开发环境修改配置...
-    //   process.env.BASE_URL = 'www.lilei.com';
+    //   process.env.BASE_URL = 'www.lilei.com'
     // } else if (process.env.NODE_ENV === 'test') {
     //   // 为测试环境修改配置...
     // }
@@ -23,6 +23,18 @@ module.exports = {
         "@c": path.resolve(__dirname, "./src/components")
       }
     };
+  },
+  // svg
+  chainWebpack: config => {
+    const svgRule = config.module.rule("svg");
+    svgRule.uses.clear();
+    svgRule
+      .use("svg-sprite-loader") //npm install svg-sprite-loader 下载svg-sprite-loader包
+      .loader("svg-sprite-loader")
+      .options({
+        symbolId: "icon-[name]",
+        include: ["./src/icons"] //svg文件位置
+      });
   },
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,
