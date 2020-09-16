@@ -1,0 +1,69 @@
+import Vue from "vue";
+import {
+  Form,
+  Field,
+  Button,
+  Tab,
+  Tabs,
+  RadioGroup,
+  Radio,
+  Checkbox,
+  CheckboxGroup,
+  CountDown,
+  Loading,
+  Notify,
+  Swipe,
+  SwipeItem,
+  Lazyload,
+  Grid,
+  GridItem,
+  Image,
+  DropdownMenu,
+  DropdownItem,
+  Card,
+  Empty,
+  Col,
+  Row,
+  Tabbar,
+  TabbarItem,
+  Search,
+  Toast,
+  TreeSelect,
+  Sidebar,
+  SidebarItem,
+  List,
+  Cell
+} from "vant";
+Vue.use(Form);
+Vue.use(Field);
+Vue.use(Button);
+Vue.use(Tab);
+Vue.use(Tabs);
+Vue.use(RadioGroup);
+Vue.use(Radio);
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
+Vue.use(CountDown);
+Vue.use(Loading);
+Vue.use(Notify);
+Vue.use(Swipe);
+Vue.use(SwipeItem);
+Vue.use(Lazyload);
+Vue.use(Grid);
+Vue.use(GridItem);
+Vue.use(Image);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
+Vue.use(Card);
+Vue.use(Empty);
+Vue.use(Col);
+Vue.use(Row);
+Vue.use(Tabbar);
+Vue.use(TabbarItem);
+Vue.use(Search);
+Vue.use(Toast);
+Vue.use(TreeSelect);
+Vue.use(Sidebar);
+Vue.use(SidebarItem);
+Vue.use(List);
+Vue.use(Cell);

@@ -1,17 +1,13 @@
 <template>
   <div id="app">
-    <router-view/>
+    <keep-alive>
+      <router-view />
+    </keep-alive>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'app'
+<style lang="scss">
+#app {
+  width: 100%;
 }
-</script>
-
-<style>
-  @import 'normalize.css/normalize.css';
-  @import './style/index.css';
-  @import './style/custom.css';
 </style>
