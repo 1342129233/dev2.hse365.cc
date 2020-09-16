@@ -1,161 +1,331 @@
 <template>
-  <div>
-    <Headertop :headtitle="headtitle"></Headertop>
-    <div class="login-section">
-      <van-tabs v-model="active">
-        <van-tab title="登录">
-          <van-form @submit="onSubmit">
-            <van-field
-              v-model="username"
-              name="用户名"
-              label="用户名"
-              placeholder="用户名"
-              :rules="[{ required: true, message: '请填写用户名' }]"
-            />
-            <van-field
-              v-model="password"
-              type="password"
-              name="密码"
-              label="密码"
-              placeholder="密码"
-              :rules="[{ required: true, message: '请填写密码' }]"
-            />
-            <van-checkbox v-model="checked" icon-size="14px" class="pass_jz"
-              >记住密码</van-checkbox
-            >
-            <div style="margin: 16px">
-              <van-button
-                round
-                block
-                type="primary"
-                native-type="submit"
-                size="small"
-              >
-                登录
-              </van-button>
-            </div>
-          </van-form>
-          <div class="retrieve">找回密码</div>
-        </van-tab>
-        <van-tab title="注册">
-          <van-form @submit="zhuce">
-            <!-- 输入手机号，调起手机号键盘 -->
-            <van-field v-model="tel" type="tel" label="手机号" />
-            <!-- 短信验证码 -->
-            <van-field
-              v-model="sms"
-              center
-              clearable
-              label="短信验证码"
-              placeholder="请输入短信验证码"
-            >
-              <template #button>
-                <van-button
-                  type="primary"
-                  native-type="submit"
-                  size="small"
-                  @click.prevent="senden"
-                  >{{ verificationcode }}</van-button
-                >
-              </template>
-            </van-field>
-            <van-field
-              v-model="username"
-              name="用户名"
-              label="用户名"
-              placeholder="用户名"
-              :rules="[{ required: true, message: '请填写用户名' }]"
-            />
-            <van-field
-              v-model="password"
-              type="password"
-              name="密码"
-              label="密码"
-              placeholder="密码"
-              :rules="[{ required: true, message: '请填写密码' }]"
-            />
-            <!-- 允许输入正整数，调起纯数字键盘 -->
-            <van-field v-model="digit" type="digit" label="企业码" />
-            <van-checkbox v-model="agreement" class="pass_jz" icon-size="14px"
-              >我已阅读并同意<span class="color-green"
-                >《HSE服务协议》</span
-              ></van-checkbox
-            >
-            <div style="margin: 16px">
-              <van-button
-                round
-                block
-                type="primary"
-                native-type="submit"
-                size="small"
-              >
-                注册
-              </van-button>
-            </div>
-          </van-form>
-        </van-tab>
-      </van-tabs>
-    </div>
-  </div>
+  <el-container class="login-container">
+    <el-switch v-model="toggleParticles" inactive-color="#ff4949">
+    </el-switch>
+    <el-button class="show-account" type="text" @click="accountTip">提示帐号信息</el-button>
+    <el-card class="animated flipInY">
+      <div slot="header" class="el-card-header">
+        <lang-select class="lang-select"></lang-select>
+        <div style="clear: both;"></div>
+        <img src="../../../static/image/login-logo.png" alt="">
+        <h2 class="login-title">{{$t('login.title')}}</h2>
+      </div>
+      <el-form :rules="rules" :model="loginForm" ref="loginForm" label-width="60px">
+        <el-form-item :label="$t('login.account')" prop="username" style="position:relative">
+          <el-input type="text" v-model="loginForm.username" @keyup.enter.native="goToPwdInput"></el-input>
+          <span class="svg-container svg-container_user">
+            <svg-icon icon-class="user" />
+          </span>
+        </el-form-item>
+        <el-form-item :label="$t('login.password')" prop="pwd">
+          <el-input type="password" v-model="loginForm.pwd" @keyup.enter.native="onLogin" ref="pwd"></el-input>
+          <span class="svg-container svg-container_password">
+            <svg-icon icon-class="password" />
+          </span>
+        </el-form-item>
+        <el-form-item :label="$t('login.remember')" label-width="80px">
+          <el-switch v-model="remember"></el-switch>
+        </el-form-item>
+        <el-button type="primary" @click="onLogin('loginForm')" :loading='loading'>{{$t('login.login')}}</el-button>
+      </el-form>
+    </el-card>
+    <!-- particles.js container -->
+    <div id="particles"></div>
+  </el-container>
 </template>
-<script lang="ts">
-import { Provide, Component, Vue } from "vue-property-decorator";
-import Headertop from "@/views/common/head.vue";
-// import { UserModule } from "@/store/modules/users"
-// import { getModule } from 'vuex-module-decorators'
-import { UsersModule } from "@/store/modules/users";
-
-@Component({
-  components: {
-    Headertop
-  }
-})
-export default class Login extends Vue {
-  private headtitle = "登录/注册";
-  private checked = true; // 记住密码
-  private active = 2; // 切换注册登录
-  private username = "12345678913"; // 账号
-  private password = "666666"; // 密码
-  private tel = ""; // 手机号
-  private sms = ""; // 短信验证码
-  private digit = ""; // 企业码
-  private agreement = true; // 协议
-  private verificationcode = "获取验证码"; // 获取验证码 切换 倒计时
-  private secoped = 60;
-  // 登录
-  onSubmit(): void {
-    const am = {
-      username: this.username,
-      password: this.password
-    };
-    UsersModule.userspromStaff({ router: this.$router, am });
-  }
-  // 获取验证码
-  senden() {
-    const interval = window.setInterval(() => {
-      this.verificationcode = "(" + this.secoped + "秒)";
-      --this.secoped;
-      if (this.secoped < 0) {
-        this.verificationcode = "重新发送";
-        this.secoped = 60;
-        window.clearInterval(interval);
+<script>
+  // import { isValidUsername } from '@/utils/validate'
+  import LangSelect from '@/components/lang-select'
+  // import { saveToLocal, loadFromLocal } from '@/common/local-storage'
+  import { loadFromLocal } from '@/common/local-storage'
+  import { mapActions, mapState } from 'vuex'
+  /* eslint-disable*/
+  import particles from 'particles.js'
+  export default {
+    components: {
+      LangSelect
+    },
+    data() {
+      // username 验证
+      const validateUsername = (rule, value, callback) => {
+        if (value.length == 0) {
+          callback(new Error('请输入用户名'))
+        } else {
+          callback()
+        }
       }
-    }, 1000);
+      // pwd 验证
+      const validatePwd = (rule, value, callback) => {
+        if (value.length < 6) {
+          callback(new Error('密码不能小于6位'))
+        } else {
+          callback()
+        }
+      }
+      return {
+        // 粒子开关
+        toggleParticles: false,
+        loginForm: {
+          username: '',
+          pwd: ''
+        },
+        remember: false,
+        // loading: false,
+        rules: {
+          username: [
+            { required: true, message: '请输入账号', trigger: 'blur' },
+            { required: true, trigger: 'blur', validator: validateUsername },
+            { required: true, trigger: 'change', validator: validateUsername }
+          ],
+          pwd: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { required: true, trigger: 'blur', validator: validatePwd },
+            { required: true, trigger: 'change', validator: validatePwd }
+          ]
+        }
+      }
+    },
+    created() {
+      // 初始化时读取localStorage用户信息
+      if (loadFromLocal('remember', false)) {
+        this.loginForm.username = loadFromLocal('username', '')
+        this.loginForm.pwd = loadFromLocal('password', '')
+      } else {
+        this.loginForm.username = ''
+        this.loginForm.pwd = ''
+      }
+    },
+    methods: {
+      ...mapActions([
+        'login',
+      ]),
+      // 用户名输入框回车后切换到密码输入框
+      goToPwdInput() {
+        this.$refs.pwd.$el.getElementsByTagName('input')[0].focus();
+      },
+      // 登录操作
+      onLogin() {
+        this.$refs.pwd.$el.getElementsByTagName('input')[0].blur()
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            // this.loading = true;
+            let userInfo = {
+              'username': this.loginForm.username,
+              'password': this.loginForm.pwd
+            }
+            this.login(userInfo).then(res=>{
+              if(res.code === 0){
+                console.log(res)
+                // this.store.commit('SET_LOADING', false)
+                // this.loading = false;
+                this.$refs.loginForm.resetFields();
+                this.$router.push(res.data.user.multi_enterprise?'/enterprise':{path: '/home', query: {eid: res.data.user.manage_eid}})
+              }else{
+
+              }
+            })
+          } else {
+            return false
+          }
+        })
+      },
+      accountTip() {
+        this.$notify({
+          title: '账号：admin',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>密码：<i>666666</i></strong>',
+          type: 'success',
+          position: 'bottom-left'
+        })
+      }
+    },
+    computed: {
+      ...mapState({
+        loading: state => state.common.boo
+      })
+    },
+    watch: {
+      toggleParticles(val) {
+        if(val) {
+          particlesJS('particles', {
+            "particles": {
+              "number": {
+                "value": 15
+              },
+              "color": {
+                "value": "random"
+              },
+              "shape": {
+                "type": ["star", "image"],
+                "stroke": {
+                  "width": 0,
+                  "color": "yellow"
+                },
+                "polygon": {
+                  "nb_sides": 5
+                },
+                "image": {
+                  "src": "https://neveryu.github.io/avatar/avatar.png",
+                  "width": 100,
+                  "height": 100
+                }
+              },
+              "opacity": {
+                "value": 1,
+                "random": false,
+                "anim": {
+                  "enable": true,
+                  "speed": 1,
+                  "opacity_min": 0.1,
+                  "sync": false
+                }
+              },
+              "size": {
+                "value": 10,
+                "random": true,
+                "anim": {
+                  "enable": true,
+                  "speed": 10,
+                  "size_min": 0.1,
+                  "sync": false
+                }
+              },
+              "line_linked": {
+                "enable": false,
+                "distance": 150,
+                "color": "#ccc",
+                "opacity": 0.4,
+                "width": 1
+              },
+              "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "random",
+                "random": true,
+                "straight": false,
+                "out_mode": "out",
+                "attract": {
+                  "enable": false,
+                  "rotateX": 600,
+                  "rotateY": 1200
+                }
+              }
+            },
+            "interactivity": {
+              // "detect_on": "canvas",
+              "detect_on": "window",
+              "events": {
+                "onhover": {
+                  "enable": false,
+                  // "mode": "repulse"
+                  "mode": "grab"
+                },
+                "onclick": {
+                  "enable": false,
+                  "mode": "repulse"
+                  // "mode": "push"
+                },
+                "resize": true
+              },
+              "modes": {
+                "grab": {
+                  "distance": 400,
+                  "line_linked": {
+                    "opacity": 1
+                  }
+                },
+                "bubble": {
+                  "distance": 400,
+                  "size": 40,
+                  "duration": 2,
+                  "opacity": 8,
+                  "speed": 3
+                },
+                "repulse": {
+                  "distance": 200
+                },
+                "push": {
+                  "particles_nb": 4
+                },
+                "remove": {
+                  "particles_nb": 2
+                }
+              }
+            }
+          })
+        } else {
+          document.getElementById('particles').innerHTML = ''
+        }
+      }
+    },
+    mounted() {
+      this.accountTip()
+    }
   }
-  // 注册
-  zhuce() {
-    console.log(123);
-  }
-}
 </script>
-<style lang="scss" scoped>
-.login-section {
-  padding: 100px 20px 0px 20px;
-  .pass_jz {
-    margin-top: 10px;
+<style scoped lang="stylus">
+  .login-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: mix(#494166, #424b50) url('../../../static/image/login-bg.jpg') center no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    .show-account {
+      position: absolute;
+      left: 15px;
+      bottom: 20px;
+      color: red;
+    }
+    .el-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -300px 0 0 -200px;
+      width: 400px;
+      height: 450px;
+      background: #fff;
+      .el-card-header {
+        text-align: center
+        .lang-select {
+          float right
+        }
+      }
+      .login-title {
+        margin: 0;
+        text-align: center;
+      }
+      .el-input /deep/ .el-input__inner {
+        text-indent: 12px;
+      }
+      .svg-container {
+        position: absolute;
+        top: 0;
+        left: 5px;
+        color: #889aa4;
+        &_user {
+          font-size: 20px;
+        }
+        &_password {
+          left: 7px;
+          font-size: 16px;
+        }
+      }
+      .el-button--primary {
+        width: 100%;
+      }
+    }
   }
-  .retrieve {
-    color: $color-green;
+  #particles {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
   }
-}
 </style>
